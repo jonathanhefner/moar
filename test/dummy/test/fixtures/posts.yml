@@ -1,0 +1,4 @@
+<% 100.times do |i| %>
+post<%= i %>:
+  title: Title <%= i %>
+<% end %>
