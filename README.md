@@ -1,28 +1,28 @@
-# Moar
-Short description and motivation.
+# moar
 
-## Usage
-How to use my plugin.
+More-style pagination for Rails.
+
 
 ## Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'moar'
+gem "moar"
 ```
 
 And then execute:
+
 ```bash
-$ bundle
+$ bundle install
 ```
 
-Or install it yourself as:
-```bash
-$ gem install moar
-```
 
 ## Contributing
-Contribution directions go here.
+
+Run `rake test` to run the tests.
+
 
 ## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+[MIT License](https://opensource.org/licenses/MIT)
