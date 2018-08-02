@@ -1,4 +1,5 @@
 require "moar/version"
 require "moar/context"
 require "moar/controller"
+require "moar/helper"
 require "moar/railtie"
