@@ -3,9 +3,15 @@ require "moar"
 
 PostsController.class_eval do
   def index
-    @posts = moar(Post).where("id <= ?", params[:max_id])
+    @posts = moar(Post).order(:id)
 
-    render inline: "<main><%= @posts.count %></main>"
+    render inline: <<~ERB
+      <p id="page"><%= @moar.page %></p>
+      <p id="accumulative"><%= @moar.accumulative %></p>
+      <p id="limit"><%= @moar.limit %></p>
+      <p id="count"><%= @posts.count %></p>
+      <p id="ids"><%= @posts.map(&:id).join(",") %></p>
+    ERB
   end
 end
 
@@ -13,33 +19,17 @@ class ControllerTest < ActionDispatch::IntegrationTest
 
   fixtures "posts"
 
-  def test_incremental_page_sizes
-    max_page_size = moar_increments.sum
-
-    each_set_size do |set_size|
-      page_sizes = get_page_sizes(set_size)
-
-      (0...page_sizes.length).each do |i|
-        expected = moar_increments[i] || max_page_size
-        assert_operator page_sizes[i], (i < page_sizes.length - 1 ? :== : :<=), expected
-      end
-
-      assert_equal set_size, page_sizes.sum
-    end
+  def test_incremental_pagination
+    iterate_pages_and_check(accumulative: false)
   end
 
-  def test_accumulative_page_sizes
-    each_set_size do |set_size|
-      page_sizes = get_page_sizes(set_size, accumulative: true)
+  def test_accumulative_pagination
+    iterate_pages_and_check(accumulative: true)
+  end
 
-      (0...page_sizes.length).each do |i|
-        expected = [moar_increments.take(i + 1).sum, set_size].min
-        assert_operator page_sizes[i], (i < page_sizes.length - 1 ? :== : :<=), expected
-      end
-
-      assert_operator page_sizes.length, :>=, (set_size.zero? ? 0 : moar_increments.length)
-      assert_equal set_size, page_sizes.drop(moar_increments.length - 1).sum
-    end
+  def test_pagination_with_no_records
+    Post.destroy_all
+    iterate_pages_and_check
   end
 
   private
@@ -48,30 +38,26 @@ class ControllerTest < ActionDispatch::IntegrationTest
     Moar::Controller::PAGE_SIZES
   end
 
-  def each_set_size
-    set_sizes = (0..moar_increments.length).map{|n| moar_increments.take(n).sum }.
-      flat_map{|set_size| [set_size, set_size + 1] } + [Post.count]
+  def iterate_pages_and_check(beyond: 1, accumulative: false)
+    page_ids = []
 
-    assert_operator set_sizes.max, :<=, Post.count # sanity check
-
-    set_sizes.each{|set_size| yield set_size }
-  end
-
-  def get_page_sizes(set_size, accumulative: false)
-    max_id = Post.order(:id).limit(set_size).pluck(:id).last || -1
-    page_sizes = []
-
-    while page_sizes.last != 0
+    (1..moar_increments.length + beyond).each do |page|
       get posts_path, params: {
-        max_id: max_id,
-        page: (page_sizes.length + 1 unless page_sizes.empty?),
+        page: (page unless page == 1),
         page_acc: accumulative.presence,
       }.compact
 
-      page_sizes << css_select("main").text.to_i
+      assert_equal page.to_s, css_select("#page").text
+      assert_equal accumulative.to_s, css_select("#accumulative").text
+      assert_operator css_select("#count").text.to_i, :<=, css_select("#limit").text.to_i
+
+      page_ids << css_select("#ids").text.presence
     end
 
-    page_sizes[0...-1]
+    total_limit = moar_increments.sum * (1 + beyond)
+    expected_ids = Post.order(:id).limit(total_limit).pluck(:id).join(",")
+    actual_ids = (accumulative ? page_ids.last(1 + beyond) : page_ids).compact.join(",")
+    assert_equal expected_ids, actual_ids
   end
 
 end
