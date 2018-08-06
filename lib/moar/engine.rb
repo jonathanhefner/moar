@@ -1,6 +1,6 @@
 module Moar
   # @!visibility private
-  class Railtie < ::Rails::Railtie
+  class Engine < ::Rails::Engine
     initializer "moar" do |app|
       ActiveSupport.on_load :action_controller do
         include Moar::Controller
