@@ -16,5 +16,9 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 5.1"
 
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "puma", "~> 3.11"
+  s.add_development_dependency "capybara", ">= 2.15", "< 4.0"
+  s.add_development_dependency "selenium-webdriver"
+  s.add_development_dependency "chromedriver-helper"
   s.add_development_dependency "yard", "~> 0.9"
 end

@@ -12,4 +12,5 @@
 //
 //= require rails-ujs
 //= require activestorage
+//= require moar
 //= require_tree .
