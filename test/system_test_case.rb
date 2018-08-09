@@ -22,12 +22,16 @@ class SystemTestCase < ActionDispatch::SystemTestCase
 
   fixtures "posts"
 
+  def teardown
+    Moar.config = Moar::Config.new
+  end
+
   protected
 
   def iterate_and_verify(model_class, javascript)
     from_remote = false
     visit polymorphic_path(model_class, AMBIENT_PARAMS)
-    (1..Moar::Controller::PAGE_SIZES.length + 1).each do |page|
+    (1..Moar.config.increments.length + 1).each do |page|
       link = verify_page_contents(model_class, page, javascript)
       if from_remote
         visit current_url # refresh
@@ -41,7 +45,7 @@ class SystemTestCase < ActionDispatch::SystemTestCase
 
   def verify_page_contents(model_class, page, accumulative)
     # tested in tests/context_test.rb, so assume behavior is correct
-    context = Moar::Context.new(Moar::Controller::PAGE_SIZES, page, accumulative)
+    context = Moar::Context.new(Moar.config.increments, page, accumulative)
 
     verify_ambient_params
     verify_ids(model_class, context)

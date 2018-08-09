@@ -19,6 +19,11 @@ class StaticHtmlSystemTest < SystemTestCase
     iterate_and_verify(Post, false)
   end
 
+  def test_pagination_with_single_page_size
+    Moar.config.increments = [5]
+    iterate_and_verify(Post, false)
+  end
+
   def test_pagination_with_custom_action
     visit new_post_path
     assert_equal new_post_path, URI(find("#link")["href"]).path
