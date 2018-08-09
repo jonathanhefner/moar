@@ -51,6 +51,11 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     CONTENTS
   end
 
+  def test_copies_initializer
+    run_generator
+    assert_file "config/initializers/moar.rb"
+  end
+
   private
 
   def run_generator_and_verify_script_manifest(contents)

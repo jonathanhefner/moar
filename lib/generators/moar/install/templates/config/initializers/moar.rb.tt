@@ -1,0 +1,5 @@
+Moar.config.tap do |config|
+  config.increments = <%= Moar.config.increments.inspect %>
+  config.page_param = <%= Moar.config.page_param.inspect %>
+  config.accumulation_param = <%= Moar.config.accumulation_param.inspect %>
+end

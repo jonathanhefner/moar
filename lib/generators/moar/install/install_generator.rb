@@ -4,6 +4,8 @@ module Moar
   # @!visibility private
   module Generators
     class InstallGenerator < Rails::Generators::Base
+      source_root File.join(__dir__, "templates")
+
       def inject_javascript
         inside do
           manifest = Dir["app/assets/javascripts/application.js{,.coffee}"].first
@@ -14,6 +16,10 @@ module Moar
 
           inject_into_file manifest, "#{eq} require moar\n", before: before
         end
+      end
+
+      def copy_initializer
+        template "config/initializers/moar.rb"
       end
     end
   end
