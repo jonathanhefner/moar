@@ -70,8 +70,9 @@ class SystemTestCase < ActionDispatch::SystemTestCase
       assert_equal data_remote.to_s, link["data-remote"]
       assert_equal "Loading...", link["data-disable-with"]
       assert_equal "#ids", link["data-paginates"]
-      assert_equal "page_acc", link["data-accumulation-param"]
+      assert_equal Moar.config.accumulation_param.to_s, link["data-accumulation-param"]
       assert_equal current_path, URI(link["href"]).path
+      assert_match %r"\b#{Moar.config.page_param}=", URI(link["href"]).query
       link
     else
       refute_selector selector

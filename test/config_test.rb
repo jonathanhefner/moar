@@ -22,4 +22,14 @@ class ConfigTest < Minitest::Test
     assert_equal DEFAULT_FULL_PAGE_SIZE, Moar.config.increments.sum
   end
 
+  def test_page_param_accessor
+    Moar.config.page_param = :foo
+    assert_equal :foo, Moar.config.page_param
+  end
+
+  def test_accumulation_param_accessor
+    Moar.config.accumulation_param = :foo
+    assert_equal :foo, Moar.config.accumulation_param
+  end
+
 end

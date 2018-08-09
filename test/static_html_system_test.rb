@@ -19,6 +19,15 @@ class StaticHtmlSystemTest < SystemTestCase
     iterate_and_verify(Post, false)
   end
 
+  def test_pagination_with_different_config
+    Moar.config.tap do |config|
+      config.increments = [1, 2, 3]
+      config.page_param = :p
+      config.accumulation_param = :k
+    end
+    iterate_and_verify(Post, false)
+  end
+
   def test_pagination_with_single_page_size
     Moar.config.increments = [5]
     iterate_and_verify(Post, false)

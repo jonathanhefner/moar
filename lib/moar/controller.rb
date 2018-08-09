@@ -4,8 +4,8 @@ module Moar
     def moar(relation)
       @moar = Moar::Context.new(
         Moar.config.increments,
-        params[:page].to_i,
-        params[:page_acc].present?
+        params[Moar.config.page_param].to_i,
+        params[Moar.config.accumulation_param].present?
       )
 
       relation.offset(@moar.offset).limit(@moar.limit)

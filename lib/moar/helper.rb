@@ -3,8 +3,8 @@ module Moar
 
     def link_to_more(records, target, html_options = {})
       unless records.length < @moar.limit
-        params = request.query_parameters.except("page_acc")
-        params["page"] = @moar.page + 1
+        params = request.query_parameters.except(Moar.config.accumulation_param.to_s)
+        params[Moar.config.page_param.to_s] = @moar.page + 1
 
         options = { controller: controller_path, action: action_name, params: params }
 
@@ -13,7 +13,7 @@ module Moar
         html_options["data-type"] = "html"
         html_options["data-disable-with"] = "Loading..."
         html_options["data-paginates"] = target
-        html_options["data-accumulation-param"] = "page_acc"
+        html_options["data-accumulation-param"] = Moar.config.accumulation_param.to_s
 
         link_to "More", options, html_options
       end
