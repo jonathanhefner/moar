@@ -56,6 +56,11 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     assert_file "config/initializers/moar.rb"
   end
 
+  def test_copies_locales
+    run_generator
+    assert_file "config/locales/moar.en.yml"
+  end
+
   private
 
   def run_generator_and_verify_script_manifest(contents)

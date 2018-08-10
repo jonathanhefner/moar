@@ -21,6 +21,10 @@ module Moar
       def copy_initializer
         template "config/initializers/moar.rb"
       end
+
+      def copy_locales
+        copy_file "config/locales/moar.en.yml"
+      end
     end
   end
 end

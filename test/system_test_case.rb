@@ -22,8 +22,16 @@ class SystemTestCase < ActionDispatch::SystemTestCase
 
   fixtures "posts"
 
+  def setup
+    # HACK trigger I18n initialization, otherwise translation stored
+    # before initialization via `I18n.backend.store_translations` will
+    # be overwritten
+    I18n.t(:"moar.more")
+  end
+
   def teardown
     Moar.config = Moar::Config.new
+    I18n.reload!
   end
 
   protected
@@ -68,7 +76,6 @@ class SystemTestCase < ActionDispatch::SystemTestCase
       link = find selector
       data_remote = context.page < context.increments.length
       assert_equal data_remote.to_s, link["data-remote"]
-      assert_equal "Loading...", link["data-disable-with"]
       assert_equal "#ids", link["data-paginates"]
       assert_equal Moar.config.accumulation_param.to_s, link["data-accumulation-param"]
       assert_equal current_path, URI(link["href"]).path
