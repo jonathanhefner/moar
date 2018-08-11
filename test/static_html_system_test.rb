@@ -39,21 +39,41 @@ class StaticHtmlSystemTest < SystemTestCase
   end
 
   def test_default_translations
-    visit_and_assert_translations Post, %r"^More", %r"^Load"
+    visit_and_assert_translations posts_path, %r"^More[^%]*$", %r"^Load[^%]*$"
   end
 
   def test_custom_translations
     I18n.backend.store_translations(:en, moar: {
-      more: "MMMO",
-      loading: "LLLO",
+      more: "MMMO %{results_name}",
+      loading: "LLLO %{results_name}",
     })
-    visit_and_assert_translations Post, %r"MMMO", %r"LLLO"
+    visit_and_assert_translations posts_path, %r"MMMO posts", %r"LLLO posts"
+  end
+
+  def test_results_name_custom_i18n
+    I18n.backend.store_translations(:en,
+      moar: { more: "%{results_name}" },
+      activerecord: { models: { post: { one: "post", other: "peest" } } },
+    )
+    visit_and_assert_translations posts_path, %r"peest", %r"."
+  end
+
+  def test_results_name_custom_inflection
+    # HACK trigger internal caching / method generation reliant on
+    # inflection, otherwise subsequent tests may fail even when original
+    # inflection is restored
+    polymorphic_path(Post)
+
+    I18n.backend.store_translations(:en, moar: { more: "%{results_name}" })
+    ActiveSupport::Inflector.inflections.irregular "post", "posten"
+    visit_and_assert_translations posts_path, %r"posten", %r"."
+    ActiveSupport::Inflector.inflections.irregular "post", "posts"
   end
 
   private
 
-  def visit_and_assert_translations(model_class, more_pattern, loading_pattern)
-    visit polymorphic_path(model_class)
+  def visit_and_assert_translations(path, more_pattern, loading_pattern)
+    visit path
     link = find "#link"
     assert_match more_pattern, link.text
     assert_match loading_pattern, link["data-disable-with"]

@@ -1,4 +1,4 @@
 en:
   moar:
-    more: "More"
+    more: "More %{results_name}"
     loading: "Loading..."
