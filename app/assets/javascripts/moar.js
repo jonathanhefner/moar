@@ -6,6 +6,10 @@ document.addEventListener("ajax:success", function(event){
 
     // insert response elements
     var container = document.querySelector(containerSelector);
+    if (!container) {
+      console.error("Invalid pagination target: " + containerSelector);
+      return;
+    }
     var responseContainer = response.querySelector(containerSelector);
     if (responseContainer) {
       while (responseContainer.hasChildNodes()) {

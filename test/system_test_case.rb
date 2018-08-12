@@ -18,6 +18,7 @@ PostsController.class_eval do
 
       <%= link_to_more @posts, "#ids", id: "link", class: "someclass" %>
       <%= link_to_more @posts, "#ids" %><!-- try without html_options -->
+      <%= link_to_more @posts, "#eyedees", id: "broken" %>
     ERB
   end
 end
@@ -44,12 +45,13 @@ class SystemTestCase < ActionDispatch::SystemTestCase
   def iterate_and_verify(model_class, increments: Moar.config.increments, javascript: false)
     from_remote = false
     visit polymorphic_path(model_class, AMBIENT_PARAMS)
-    (1..increments.length + 1).each do |page|
+    (1..increments.length + 1).each do |page_number|
       # tested in tests/context_test.rb, so assume behavior is correct
-      context = Moar::Context.new(increments, page, javascript)
+      context = Moar::Context.new(increments, page_number, javascript)
 
       link = verify_page_contents(model_class, context)
       if from_remote
+        assert_empty page.driver.browser.manage.logs.get(:browser)
         visit current_url # refresh
         link = verify_page_contents(model_class, context) # verify refresh
       end
