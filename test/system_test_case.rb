@@ -32,18 +32,22 @@ class SystemTestCase < ActionDispatch::SystemTestCase
   def teardown
     Moar.config = Moar::Config.new
     I18n.reload!
+    PostsController.moar_increments nil
   end
 
   protected
 
-  def iterate_and_verify(model_class, javascript)
+  def iterate_and_verify(model_class, increments: Moar.config.increments, javascript: false)
     from_remote = false
     visit polymorphic_path(model_class, AMBIENT_PARAMS)
-    (1..Moar.config.increments.length + 1).each do |page|
-      link = verify_page_contents(model_class, page, javascript)
+    (1..increments.length + 1).each do |page|
+      # tested in tests/context_test.rb, so assume behavior is correct
+      context = Moar::Context.new(increments, page, javascript)
+
+      link = verify_page_contents(model_class, context)
       if from_remote
         visit current_url # refresh
-        link = verify_page_contents(model_class, page, javascript) # verify refresh
+        link = verify_page_contents(model_class, context) # verify refresh
       end
       break unless link
       from_remote = javascript && link["data-remote"] == "true"
@@ -51,10 +55,7 @@ class SystemTestCase < ActionDispatch::SystemTestCase
     end
   end
 
-  def verify_page_contents(model_class, page, accumulative)
-    # tested in tests/context_test.rb, so assume behavior is correct
-    context = Moar::Context.new(Moar.config.increments, page, accumulative)
-
+  def verify_page_contents(model_class, context)
     verify_ambient_params
     verify_ids(model_class, context)
     verify_link(model_class, context)

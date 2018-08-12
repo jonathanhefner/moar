@@ -11,12 +11,12 @@ class StaticHtmlSystemTest < SystemTestCase
   driven_by :rack_test
 
   def test_pagination
-    iterate_and_verify(Post, false)
+    iterate_and_verify(Post)
   end
 
   def test_pagination_with_no_records
     Post.delete_all
-    iterate_and_verify(Post, false)
+    iterate_and_verify(Post)
   end
 
   def test_pagination_with_different_config
@@ -25,12 +25,18 @@ class StaticHtmlSystemTest < SystemTestCase
       config.page_param = :p
       config.accumulation_param = :k
     end
-    iterate_and_verify(Post, false)
+    iterate_and_verify(Post)
+  end
+
+  def test_pagination_with_custom_increments
+    increments = [1, 2, 1, 2]
+    PostsController.moar_increments increments
+    iterate_and_verify(Post, increments: increments)
   end
 
   def test_pagination_with_single_page_size
-    Moar.config.increments = [5]
-    iterate_and_verify(Post, false)
+    PostsController.moar_increments [5]
+    iterate_and_verify(Post, increments: [5])
   end
 
   def test_pagination_with_custom_action
