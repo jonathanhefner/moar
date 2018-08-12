@@ -10,7 +10,11 @@ PostsController.class_eval do
     render layout: true, inline: <<~ERB
       <p id="ambient_params">#{params.to_unsafe_h.slice(*AMBIENT_PARAMS.keys)}</p>
       <p id="page"><%= @moar.page %></p>
-      <p id="ids"><%= @posts.map(&:id).join(",") %>,</p>
+      <% if @posts.empty? %>
+        <p id="empty">,</p>
+      <% else %>
+        <p id="ids"><%= @posts.map(&:id).join(",") %>,</p>
+      <% end %>
 
       <%= link_to_more @posts, "#ids", id: "link", class: "someclass" %>
       <%= link_to_more @posts, "#ids" %><!-- try without html_options -->
@@ -68,7 +72,7 @@ class SystemTestCase < ActionDispatch::SystemTestCase
   def verify_ids(model_class, context)
     expected = model_class.order(:id).offset(context.offset).limit(context.limit).
       pluck(:id).join(",") + ","
-    assert_equal expected, find("#ids").text
+    assert_equal expected, find("#ids, #empty").text
   end
 
   def verify_link(model_class, context)

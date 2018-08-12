@@ -7,8 +7,10 @@ document.addEventListener("ajax:success", function(event){
     // insert response elements
     var container = document.querySelector(containerSelector);
     var responseContainer = response.querySelector(containerSelector);
-    while (responseContainer.hasChildNodes()) {
-      container.appendChild(responseContainer.firstChild);
+    if (responseContainer) {
+      while (responseContainer.hasChildNodes()) {
+        container.appendChild(responseContainer.firstChild);
+      }
     }
 
     // update browser URL

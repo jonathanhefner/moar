@@ -9,4 +9,9 @@ class DynamicHtmlSystemTest < SystemTestCase
     iterate_and_verify(Post, javascript: true)
   end
 
+  def test_pagination_with_omitted_container
+    Post.limit(Post.count - Moar.config.increments.first).delete_all
+    iterate_and_verify(Post, javascript: true)
+  end
+
 end
