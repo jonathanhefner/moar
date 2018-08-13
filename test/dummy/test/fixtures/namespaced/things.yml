@@ -1,0 +1,4 @@
+<% 100.times do |i| %>
+thing<%= i %>:
+  color: Color <%= i %>
+<% end %>

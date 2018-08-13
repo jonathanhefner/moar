@@ -1,0 +1,2 @@
+module Namespaced::ThingsHelper
+end

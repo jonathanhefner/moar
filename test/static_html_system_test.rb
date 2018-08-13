@@ -14,6 +14,10 @@ class StaticHtmlSystemTest < SystemTestCase
     iterate_and_verify(Post)
   end
 
+  def test_pagination_with_namespaced_controller
+    iterate_and_verify(Namespaced::Thing)
+  end
+
   def test_pagination_with_no_records
     Post.delete_all
     iterate_and_verify(Post)

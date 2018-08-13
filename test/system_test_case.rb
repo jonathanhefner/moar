@@ -3,29 +3,42 @@ require "moar"
 
 AMBIENT_PARAMS = { "foo" => "foooo", "bar" => { "baz" => "baaaaz" } }
 
-PostsController.class_eval do
-  def index
-    @posts = moar(Post).order(:id)
+ApplicationController.class_eval do
+  def index(model_class)
+    @results = moar(model_class).order(:id)
 
     render layout: true, inline: <<~ERB
       <p id="ambient_params">#{params.to_unsafe_h.slice(*AMBIENT_PARAMS.keys)}</p>
       <p id="page"><%= @moar.page %></p>
-      <% if @posts.empty? %>
+      <% if @results.empty? %>
         <p id="empty">,</p>
       <% else %>
-        <p id="ids"><%= @posts.map(&:id).join(",") %>,</p>
+        <p id="ids"><%= @results.map(&:id).join(",") %>,</p>
       <% end %>
 
-      <%= link_to_more @posts, "#ids", id: "link", class: "someclass" %>
-      <%= link_to_more @posts, "#ids" %><!-- try without html_options -->
-      <%= link_to_more @posts, "#eyedees", id: "broken" %>
+      <%= link_to_more @results, "#ids", id: "link", class: "someclass" %>
+      <%= link_to_more @results, "#ids" %><!-- try without html_options -->
+      <%= link_to_more @results, "#eyedees", id: "broken" %>
     ERB
+  end
+end
+
+PostsController.class_eval do
+  def index
+    super(Post)
+  end
+end
+
+Namespaced::ThingsController.class_eval do
+  def index
+    super(Namespaced::Thing)
   end
 end
 
 class SystemTestCase < ActionDispatch::SystemTestCase
 
   fixtures "posts"
+  fixtures "namespaced/things"
 
   def setup
     # HACK trigger I18n initialization, otherwise translation stored
