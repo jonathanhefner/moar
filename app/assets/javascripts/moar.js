@@ -24,8 +24,7 @@ document.addEventListener("ajax:success", function(event){
     // update pagination link
     var responseLink = response.querySelector("a[data-paginates]");
     if (responseLink) {
-      link.setAttribute("href", responseLink.getAttribute("href"));
-      link.setAttribute("data-remote", responseLink.getAttribute("data-remote"));
+      link.parentNode.replaceChild(responseLink, link);
     } else {
       link.parentNode.removeChild(link);
     }

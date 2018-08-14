@@ -94,10 +94,15 @@ class SystemTestCase < ActionDispatch::SystemTestCase
     selector = "a#link.someclass"
     if model_class.count >= context.offset + context.limit
       link = find selector
-      data_remote = context.page < context.increments.length
-      assert_equal data_remote.to_s, link["data-remote"]
       assert_equal "#ids", link["data-paginates"]
-      assert_equal Moar.config.accumulation_param.to_s, link["data-accumulation-param"]
+      if context.page < context.increments.length
+        assert_equal Moar.config.accumulation_param.to_s, link["data-accumulation-param"]
+        assert_equal "true", link["data-remote"]
+        refute_nil link["data-disable-with"]
+      else
+        assert_nil link["data-remote"]
+        assert_nil link["data-disable-with"]
+      end
       assert_equal current_path, URI(link["href"]).path
       assert_match %r"\b#{Moar.config.page_param}=", URI(link["href"]).query
       link
