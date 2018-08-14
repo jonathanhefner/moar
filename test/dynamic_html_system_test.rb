@@ -24,4 +24,13 @@ class DynamicHtmlSystemTest < SystemTestCase
     assert_match %r"#eyedees", error.message
   end
 
+  def test_navigate_back_to_accumulated
+    increments = [1, 1]
+    PostsController.moar_increments increments
+    visit posts_path
+    increments.length.times{ click_link "link" }
+    execute_script "window.history.back();"
+    verify_ids(Post, Moar::Context.new(increments, increments.length, true))
+  end
+
 end

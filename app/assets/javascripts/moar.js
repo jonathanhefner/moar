@@ -19,7 +19,7 @@ document.addEventListener("ajax:success", function(event){
 
     // update browser URL
     var newUrl = link.href + "&" + link.getAttribute("data-accumulation-param") + "=1";
-    history.replaceState({}, "", newUrl);
+    history.replaceState(history.state, "", newUrl);
 
     // update pagination link
     var responseLink = response.querySelector("a[data-paginates]");
