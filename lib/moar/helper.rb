@@ -2,6 +2,8 @@ module Moar
   module Helper
 
     def link_to_more(records, target, html_options = {})
+      raise "#{controller.class}##{action_name} did not invoke #moar" unless defined?(@moar)
+
       unless records.length < @moar.limit
         params = request.query_parameters.except(Moar.config.accumulation_param.to_s)
         params[Moar.config.page_param.to_s] = @moar.page + 1

@@ -6,6 +6,12 @@ PostsController.class_eval do
   end
 end
 
+Namespaced::ThingsController.class_eval do
+  def new
+    render inline: '<%= link_to_more Namespaced::Thing.all, "iambroken" %>'
+  end
+end
+
 class StaticHtmlSystemTest < SystemTestCase
 
   driven_by :rack_test
@@ -46,6 +52,12 @@ class StaticHtmlSystemTest < SystemTestCase
   def test_pagination_with_custom_action
     visit new_post_path
     assert_equal new_post_path, URI(find("#link")["href"]).path
+  end
+
+  def test_missing_call_to_moar
+    error = assert_raises{ visit new_namespaced_thing_path }
+    assert_includes error.message, "moar"
+    assert_includes error.message, "Namespaced::ThingsController#new"
   end
 
   def test_default_translations
