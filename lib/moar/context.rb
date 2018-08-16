@@ -3,6 +3,7 @@ module Moar
 
     attr_reader :increments, :page, :accumulative, :offset, :limit
 
+    # @!visibility private
     def initialize(increments, page, accumulative)
       @increments = increments
       @page = [page, 1].max

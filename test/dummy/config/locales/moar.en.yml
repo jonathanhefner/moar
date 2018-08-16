@@ -1,4 +1,12 @@
+# All translations below are provided a `results_name` interpolation
+# argument which contains the humanized translated pluralized downcased
+# name of the relevant model.  For example, if the paginated results
+# consist of GeographicLocation models, the `results_name` argument will
+# be "geographic locations".
+
 en:
   moar:
+    # Link text rendered by `link_to_more`.
     more: "More %{results_name}"
+    # Disabled link text shown when fetching paginated results via Ajax.
     loading: "Loading..."
