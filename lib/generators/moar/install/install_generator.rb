@@ -1,5 +1,3 @@
-#require "rails/generators/base"
-
 module Moar
   # @!visibility private
   module Generators
