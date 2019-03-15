@@ -1,14 +1,13 @@
 module Moar
   module Helper
 
-    # Generates an anchor element that links to more paginated results.
-    # If JavaScript is active, and the current page number is less than
+    # Renders an anchor element that links to more paginated results.
+    # If JavaScript is enabled, and the current page number is less than
     # the number of pagination increments (see {Moar::Config#increments}
     # or {Moar::Controller::ClassMethods#moar_increments}), the link
-    # will use Ajax to fetch the results and inject them into the
-    # element matching the CSS selector specified by +target+.
-    # Otherwise, the link will behave normally and navigate to the next
-    # page of results.
+    # will use Ajax to fetch the results and append them to the element
+    # matching the CSS selector specified by +target+.  Otherwise, the
+    # link will navigate to the next page of results.
     #
     # The text of the link is determined via I18n using translation key
     # +:"moar.more"+.  A +results_name+ interpolation argument is
@@ -17,10 +16,6 @@ module Moar
     # string is <code>"Need more %{results_name}!"</code> and +results+
     # is an array of +CowBell+ models, the link text will be "Need more
     # cow bells!".
-    #
-    # This helper method accepts an +html_options+ Hash, and passes it
-    # to Rails' +ActionView::Helpers::UrlHelper#link_to+.  See its
-    # documentation for information about available options.
     #
     # If no more results are available, this helper method will return
     # nil so that no link is rendered.  Whether there are more results
@@ -36,8 +31,11 @@ module Moar
     # user can click through to the final page.
     #
     # @param results [ActiveRecord::Relation, Array<ActiveModel::Naming>]
+    #   query results for current page
     # @param target [String]
+    #   CSS selector of element containing rendered results
     # @param html_options [Hash]
+    #   HTML options (see +ActionView::Helpers::UrlHelper#link_to+)
     # @return [String, nil]
     # @raise [RuntimeError]
     #   if controller action did not invoke {Moar::Controller#moar}
