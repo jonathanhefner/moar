@@ -25,6 +25,7 @@ With *moar*, this story can be realized using the following code:
 
 ```ruby
 ## app/controllers/posts_controller.rb
+
 class PostsController < ApplicationController
   # Step 1 (optional): set controller-specific pagination increments
   moar_increments [10, 20, 30]
@@ -36,8 +37,9 @@ class PostsController < ApplicationController
 end
 ```
 
-```erb
+```html+erb
 <!-- app/views/posts/index.html.erb -->
+
 <h1>Posts</h1>
 <ul id="list-of-posts">
 <% @posts.each do |post| %>
