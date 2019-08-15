@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "moar"
   s.version     = Moar::VERSION
   s.authors     = ["Jonathan Hefner"]
-  s.email       = ["jonathan.hefner@gmail.com"]
+  s.email       = ["jonathan@hefner.pro"]
   s.homepage    = "https://github.com/jonathanhefner/moar"
   s.summary     = %q{More-style pagination for Rails}
   s.license     = "MIT"
