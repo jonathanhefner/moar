@@ -61,6 +61,18 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     assert_file "config/locales/moar.en.yml"
   end
 
+  def test_warns_when_javascript_manifest_not_found
+    File.delete(@script_manifest)
+    output = run_generator
+    assert_match %r"^WARN.+require moar", output
+  end
+
+  def test_warns_when_javascript_inject_fails
+    File.write(@script_manifest, "")
+    output = run_generator
+    assert_match %r"^WARN.+require moar", output
+  end
+
   private
 
   def run_generator_and_verify_script_manifest(contents)
