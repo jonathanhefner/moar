@@ -37,9 +37,6 @@ end
 
 class SystemTestCase < ActionDispatch::SystemTestCase
 
-  fixtures "posts"
-  fixtures "namespaced/things"
-
   def setup
     # HACK trigger I18n initialization, otherwise translation stored
     # before initialization via `I18n.backend.store_translations` will
