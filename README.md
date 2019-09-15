@@ -1,4 +1,4 @@
-# moar
+# moar [![Build Status](https://travis-ci.org/jonathanhefner/moar.svg?branch=master)](https://travis-ci.org/jonathanhefner/moar)
 
 More-style pagination for Rails.  As an example, consider the following
 story:
