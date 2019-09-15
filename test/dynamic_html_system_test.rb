@@ -3,14 +3,14 @@ require "selenium-webdriver"
 
 class DynamicHtmlSystemTest < SystemTestCase
 
-  driven_by :selenium, using: :headless_chrome
+  driven_by :selenium_chrome_headless
 
   def test_pagination
     iterate_and_verify(Post, javascript: true)
   end
 
   def test_pagination_with_omitted_container
-    Post.limit(Post.count - Moar.config.increments.first).delete_all
+    Post.where.not(id: Post.limit(Moar.config.increments.first).pluck(:id)).delete_all
     iterate_and_verify(Post, javascript: true)
   end
 
