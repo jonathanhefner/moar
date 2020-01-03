@@ -20,5 +20,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "capybara", ">= 2.15", "< 4.0"
   s.add_development_dependency "webdrivers"
   s.add_development_dependency "turbolinks", "~> 5.1"
-  s.add_development_dependency "yard", "~> 0.9"
 end
