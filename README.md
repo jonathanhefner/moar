@@ -71,9 +71,9 @@ A few things to note:
   paginated results &mdash; no `if` required.
 
 For complete usage details, see the documentation for
-[`moar_increments`](http://www.rubydoc.info/gems/moar/Moar/Controller/ClassMethods:moar_increments),
-[`moar`](http://www.rubydoc.info/gems/moar/Moar/Controller:moar), and
-[`link_to_more`](http://www.rubydoc.info/gems/moar/Moar/Helper:link_to_more).
+[`moar_increments`](https://www.rubydoc.info/gems/moar/Moar/Controller/ClassMethods:moar_increments),
+[`moar`](https://www.rubydoc.info/gems/moar/Moar/Controller:moar), and
+[`link_to_more`](https://www.rubydoc.info/gems/moar/Moar/Helper:link_to_more).
 
 
 ## Configuration
