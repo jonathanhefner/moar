@@ -22,16 +22,16 @@ module Moar
     # is estimated by comparing +results.size+ with the limit applied by
     # {Moar::Controller#moar}.  This technique eliminates the need for
     # an extra database query, but can result in a false positive (i.e.
-    # rendering a link to an empty page) when the actual last page of
-    # results is also a full page.  This is deemed an acceptable
-    # trade-off because with a large number of pages and a large total
-    # number of results per page it is an unlikely occurrence, and
+    # rendering a link to an empty page) when the final page of results
+    # happens to be a full page.  This is deemed an acceptable trade-off
+    # because it is an unlikely occurrence with both a large number of
+    # pages and a cumulatively large number of results per page, and
     # because an extra database query cannot entirely prevent a link to
     # an empty page, in the case where records are deleted before the
     # user can click through to the final page.
     #
     # @param results [ActiveRecord::Relation, Array<ActiveModel::Naming>]
-    #   query results for current page
+    #   Query results for current page
     # @param target [String]
     #   CSS selector of element containing rendered results
     # @param html_options [Hash]

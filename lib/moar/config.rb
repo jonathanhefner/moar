@@ -34,10 +34,10 @@ module Moar
     @config ||= Moar::Config.new
   end
 
-  # @param c [Moar::Config]
-  # @return [Moar::Config]
-  def self.config=(c)
-    @config = c
+  # @param cfg [Moar::Config]
+  # @return [cfg]
+  def self.config=(cfg)
+    @config = cfg
   end
 
 end
