@@ -94,21 +94,16 @@ For example, if the translation string is `"Need more %{results_name}!"`
 and the paginated results consist of `CowBell` models, the rendered text
 will be "Need more cow bells!".
 
+
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem "moar"
-```
-
-Then execute:
+Add the gem to your Gemfile:
 
 ```bash
-$ bundle install
+$ bundle add moar
 ```
 
-And finally, run the installation generator:
+And run the installation generator:
 
 ```bash
 $ rails generate moar:install
