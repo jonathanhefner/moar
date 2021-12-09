@@ -6,6 +6,7 @@ gemspec
 group :development do
   gem 'sqlite3'
   gem 'puma'
+  gem "sprockets-rails", ">= 2.0.0"
   gem 'capybara', '>= 2.15', '< 4.0'
   gem 'webdrivers'
   gem 'turbolinks', '~> 5.1'
