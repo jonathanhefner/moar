@@ -13,7 +13,7 @@ jobs:
           - { ruby: "2.4", gemfile: rails-6.1 }
         include:
           - { ruby: "2.7", gemfile: rails-master }
-          # - { ruby: "3.0", gemfile: rails-master }
+          - { ruby: "3.0", gemfile: rails-master }
       fail-fast: false
 
     runs-on: ubuntu-latest
