@@ -61,7 +61,7 @@ class SystemTestCase < ActionDispatch::SystemTestCase
 
       link = verify_page_contents(model_class, context)
       if from_remote
-        assert_empty page.driver.browser.manage.logs.get(:browser)
+        assert_empty page.driver.browser.logs.get(:browser)
         visit current_url # refresh
         link = verify_page_contents(model_class, context) # verify refresh
       end

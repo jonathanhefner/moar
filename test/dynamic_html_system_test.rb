@@ -19,7 +19,7 @@ class DynamicHtmlSystemTest < SystemTestCase
     click_link "broken"
     error = nil
     Timeout.timeout(Capybara.default_max_wait_time) do # wait for Ajax
-      error = page.driver.browser.manage.logs.get(:browser)[0] until error
+      error = page.driver.browser.logs.get(:browser)[0] until error
     end
     assert_match %r"#eyedees", error.message
   end
