@@ -11,6 +11,5 @@
 // about supported directives.
 //
 //= require rails-ujs
-//= require turbolinks
 //= require moar
 //= require_tree .
